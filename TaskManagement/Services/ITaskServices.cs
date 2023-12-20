@@ -3,9 +3,9 @@
     public interface ITaskServices
     {
         List<Models.Task> GetAllTasks();
-        Models.Task GetTask(Guid id);
-        Task<bool> AddTaskAsync(Models.Task task);
+        Models.Task GetSingleTask(Guid id);
+        Task<Models.Task> AddTaskAsync(Models.Task task);
         bool DeleteTask(Guid id);
-        bool UpdateTask(Models.Task task);
+        Models.Task UpdateTask(Models.Task task);
     }
 }

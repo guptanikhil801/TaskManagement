@@ -10,10 +10,14 @@ namespace TaskManagement.Services
         {
             this.context = context;
         }
-        public async Task<bool> AddTaskAsync(Models.Task task)
+        public async Task<Models.Task> AddTaskAsync(Models.Task task)
         {
             await context.Tasks.AddAsync(task);
-            return context.SaveChanges() == 1;
+            if (context.SaveChanges() == 1)
+            {
+                return context.Tasks.LastOrDefault();
+            }
+            return new Models.Task { };
         }
 
         public bool DeleteTask(Guid id)
@@ -32,20 +36,21 @@ namespace TaskManagement.Services
             return context.Tasks.ToList();
         }
 
-        public Models.Task GetTask(Guid id)
+        public Models.Task GetSingleTask(Guid id)
         {
             return context.Tasks.SingleOrDefault(task => task.ID == id);
         }
 
-        public bool UpdateTask(Models.Task task)
+        public Models.Task UpdateTask(Models.Task task)
         {
             var isTaskExist = context.Tasks.Any(option => option.ID == task.ID);
             if (isTaskExist)
             {
                 context.Update(task);
-                return context.SaveChanges() == 1;
+                context.SaveChanges();
+                return context.Tasks.SingleOrDefault(option => option.ID == task.ID);
             }
-            return false;
+            return new Models.Task { };
         }
     }
 }

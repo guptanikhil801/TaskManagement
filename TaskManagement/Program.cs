@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PracticeWebApi.Contexts;
+using TaskManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("connString"));
 });
+builder.Services.AddTransient<ITaskServices, TaskServices>();
 
 var app = builder.Build();
 
@@ -22,8 +24,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
