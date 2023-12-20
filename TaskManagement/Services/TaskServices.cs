@@ -15,7 +15,7 @@ namespace TaskManagement.Services
             await context.Tasks.AddAsync(task);
             if (context.SaveChanges() == 1)
             {
-                return context.Tasks.LastOrDefault();
+                return context.Tasks.OrderBy(x => x.ID).LastOrDefault();
             }
             return new Models.Task { };
         }
